@@ -1,0 +1,1 @@
+I'm being sent little by little by little. Call the divided pieces 'chunks'.
