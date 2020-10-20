@@ -4,5 +4,8 @@
   "description": "Learn Sequelize!",
   "main": "app.js",
   "author": "SynCROSS",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app"
+  }
 }

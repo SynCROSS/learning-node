@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sequelize Server</title>
+    <style>
+      table {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      table th,
+      table td {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <form id="user-form">
+        <fieldset>
+          <legend>Registration</legend>
+          <div><input id="username" type="text" placeholder="name" /></div>
+          <div><input id="age" type="number" placeholder="age" /></div>
+          <div>
+            <input id="married" type="checkbox" /><label for="married"
+              >Married</label
+            >
+          </div>
+          <button type="submit">Submit</button>
+        </fieldset>
+      </form>
+    </div>
+    <br />
+    <table id="user-list">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Married</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{user.id}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.age}}</td>
+          <td>{{ 'Married' if user.married else 'Single'}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br />
+    <div>
+      <form id="comment-form">
+        <fieldset>
+          <legend>Add Comment</legend>
+          <div><input id="userId" type="text" placeholder="ID" /></div>
+          <div><input id="comment" type="text" placeholder="Comments" /></div>
+          <button type="submit">Submit</button>
+        </fieldset>
+      </form>
+    </div>
+    <br />
+    <table id="comment-list">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Commenter</th>
+          <th>Comment</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/sequelize.js"></script>
+  </body>
+</html>

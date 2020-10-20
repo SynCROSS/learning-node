@@ -1,0 +1,44 @@
+const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
+const { User, Comment } = require('../models');
+
+const router = express.Router();
+
+router.post('/', async (req, res, next) => {
+  try {
+    const comment = await Comment.create({
+      commenter: req.body.id,
+      comment: req.body.comment,
+    });
+    console.log(comment);
+    res.status(201).json(comment);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router
+  .route('/:id')
+  .patch(async (req, res, next) => {
+    try {
+      const result = await Comment.update(
+        { comment: req.body.comment },
+        { where: { id: req.params.id } },
+      );
+      res.json(result);
+    } catch (e) {
+      console.error(e);
+      next(e);
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      const result = await Comment.destroy({ where: { id: req.params.id } });
+      res.json(result);
+    } catch (e) {
+      console.error(e);
+      next(e);
+    }
+  });
+
+module.exports = router;
