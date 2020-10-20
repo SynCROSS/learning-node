@@ -1,0 +1,11 @@
+{
+  "name": "learning-mongoose",
+  "version": "0.0.1",
+  "description": "Learn Mongoose!",
+  "main": "app.js",
+  "author": "SynCROSS",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app"
+  }
+}
