@@ -1,4 +1,4 @@
-const mongoose = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/mongoose');
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 const userSchema = new Schema({

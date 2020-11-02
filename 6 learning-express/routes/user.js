@@ -1,4 +1,4 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
+const express = require('express');
 
 const router = express.Router();
 

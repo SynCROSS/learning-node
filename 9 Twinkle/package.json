@@ -1,8 +1,11 @@
 {
-  "name": "Twinkle",
+  "name": "twinkle",
   "version": "0.0.1",
   "description": "Twitter Clone with Express ver 1.0",
   "main": "app.js",
   "author": "SynCROSS",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app"
+  }
 }

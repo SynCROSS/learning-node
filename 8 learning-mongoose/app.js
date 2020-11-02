@@ -1,7 +1,7 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
+const express = require('express');
 const path = require('path');
-const morgan = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/morgan');
-const nunjucks = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/nunjucks');
+const morgan = require('morgan');
+const nunjucks = require('nunjucks');
 
 const connect = require('./schemas');
 const indexRouter = require('./routes');

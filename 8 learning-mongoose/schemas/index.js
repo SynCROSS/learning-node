@@ -1,6 +1,6 @@
-require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/dotenv').config();
+require('dotenv').config();
 const { MONGO_URI } = process.env;
-const mongoose = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/mongoose');
+const mongoose = require('mongoose');
 
 const connect = () => {
   if (process.env.NODE_ENV !== 'production') {
