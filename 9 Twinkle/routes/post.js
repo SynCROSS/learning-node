@@ -1,5 +1,5 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const multer = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/multer');
+const express = require('express');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 

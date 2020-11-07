@@ -1,4 +1,4 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
+const express = require('express');
 const { isLoggedIn } = require('./middlewares.js');
 const User = require('../models/user.js');
 

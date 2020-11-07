@@ -1,6 +1,6 @@
-const passport = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/passport');
-const LocalStrategy = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/passport-local/lib/strategy');
-const bcrypt = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/bcrypt');
+const passport = require('passport');
+const LocalStrategy = require('passport-local/lib/strategy');
+const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 
