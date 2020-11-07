@@ -9,6 +9,8 @@ const passport = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_mod
 require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/dotenv').config();
 const pageRouter = require('./routes/page');
 const authRouter = require('./routes/auth');
+const postRouter = require('./routes/post.js');
+const userRouter = require('./routes/user.js');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 // const { execPath } = require('process');
@@ -32,6 +34,7 @@ sequelize
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -48,6 +51,8 @@ app.use(passport.session());
 
 app.use('/', pageRouter);
 app.use('/auth', authRouter);
+app.use('/post', postRouter);
+app.use('/user', userRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.error} ${req.url} Router Ain't Exist.`);

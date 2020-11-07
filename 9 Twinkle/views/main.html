@@ -39,7 +39,7 @@
       <input type="hidden" value="{{star.User.id}}" class="star-user-id" />
       <input type="hidden" value="{{star.id}}" class="star-id" />
       <div class="star-creator">{{star.User.nick}}</div>
-      {% if not followingIdList.includes(star.User.id) and star.User.id !==
+      {% if not followerIdList.includes(star.User.id) and star.User.id !==
       user.id %}
       <button class="star-follow">Follow</button>
       {% endif %}
