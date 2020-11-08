@@ -1,0 +1,94 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="timeline">
+  {% if user %}
+  <div>
+    <form
+      id="twinkle-form"
+      action="/post"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div class="input-group">
+        <textarea id="twinkle" name="content" maxlength="140"></textarea>
+      </div>
+      <div class="img-preview">
+        <img
+          id="img-preview"
+          src=""
+          style="display: none"
+          width="250"
+          alt="Preview"
+        />
+        <input id="img-url" type="hidden" name="url" />
+      </div>
+      <div>
+        <label id="img-label" for="img">Add Image</label>
+        <input id="img" type="file" accept="image/*" />
+        <button id="explode-btn" type="submit" class="btn">Explode!</button>
+      </div>
+    </form>
+  </div>
+  {% endif %}
+  <div class="stars">
+    <form id="hashtag-form" action="/hashtag">
+      <input type="text" name="hashtag" placeholder="Search Tag" />
+      <button class="btn">Search</button>
+    </form>
+    {% for star in stars %}
+    <div class="twinkle">
+      <input type="hidden" value="{{star.User.id}}" class="star-user-id" />
+      <input type="hidden" value="{{star.id}}" class="star-id" />
+      <div class="star-creator">{{star.User.nick}}</div>
+      {% if not followerIdList.includes(star.User.id) and star.User.id !==
+      user.id %}
+      <button class="star-follow">Follow</button>
+      {% endif %}
+      <div class="star-content">{{star.content}}</div>
+      {% if star.img %}
+      <div class="star-img"><img src="{{star.img}}" alt="thumbnail" /></div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  if (document.getElementById('img')) {
+    document.getElementById('img').addEventListener('change', function (e) {
+      const formData = new FormData();
+      console.log(this, this.files);
+      formData.append('img', this.files[0]);
+      axios
+        .post('/post/img', formData)
+        .then(res => {
+          document.getElementById('img-url').value = res.data.url;
+          document.getElementById('img-preview').src = res.data.url;
+          document.getElementById('img-preview').style.display = 'inline';
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    });
+  }
+  document.querySelectorAll('.star-follow').forEach(function (tag) {
+    tag.addEventListener('click', function () {
+      const myId = document.querySelector('#my-id');
+      if (myId) {
+        const userId = tag.parentNode.querySelector('.star-user-id').value;
+        if (userId !== myId.value) {
+          if (confirm('Do You Wanna Follow?')) {
+            axios
+              .post(`/user/${userId}/follow`)
+              .then(() => {
+                location.reload();
+              })
+              .catch(error => {
+                console.error(error);
+              });
+          }
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}
