@@ -14,7 +14,6 @@ const postRouter = require('./routes/post.js');
 const userRouter = require('./routes/user.js');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
-// const { execPath } = require('process');
 
 const app = express();
 passportConfig();
@@ -60,6 +59,7 @@ app.use((req, res, next) => {
   error.status = 404;
   next(error);
 });
+
 app.use((error, req, res, next) => {
   res.locals.message = error.message;
   res.locals.error = process.env.NODE_ENV !== 'production' ? error : {};
@@ -67,7 +67,7 @@ app.use((error, req, res, next) => {
   res.render('error');
 });
 
-var port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log('Server is Waiting on Port', port);
 });
