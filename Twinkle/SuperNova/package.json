@@ -1,0 +1,11 @@
+{
+  "name": "SuperNova",
+  "version": "0.0.1",
+  "description": "Twinkle 2nd Service",
+  "main": "app.js",
+  "author": "SynCROSS",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app"
+  }
+}
