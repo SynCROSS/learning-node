@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Server Login</title>
+    <style>
+      table,
+      tr,
+      th,
+      td {
+        border: 1px solid #000;
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    {% if user and user.id %}
+    <span class="user-name">Hello! {{user.nick}}님</span>
+    <a href="/auth/logout">
+      <button>Logout</button>
+    </a>
+    <fieldset>
+      <legend>Add Domain</legend>
+      <form action="/domain" method="post">
+        <div>
+          <label for="type-free">free</label>
+          <input type="radio" id="type-free" name="type" value="free" />
+          <label for="type-premium">Premium</label>
+          <input type="radio" id="type-premium" name="type" value="premium" />
+        </div>
+        <div>
+          <label for="host">Domain</label>
+          <input
+            type="text"
+            id="host"
+            name="host"
+            placeholder="Like 'twinkle.com'"
+          />
+        </div>
+        <button>Save</button>
+      </form>
+    </fieldset>
+    <table>
+      <tr>
+        <th>Domain Address</th>
+        <th>Type</th>
+        <th>Client Secret Key</th>
+      </tr>
+      {% for domain in domains %}
+      <tr>
+        <td>{{domain.host}}</td>
+        <td>{{domain.type}}</td>
+        <td>{{domain.clientSecret}}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <form action="/auth/login" id="login-form" method="post">
+      <h2>Login with Twinkle Account</h2>
+      <div class="input-group">
+        <label for="email">E-Mail</label>
+        <input id="email" type="email" name="email" required autofocus />
+      </div>
+      <div class="input-group">
+        <label for="password">password</label>
+        <input id="password" type="password" name="password" required />
+      </div>
+      <div>
+        Register in
+        <a href="localhost:3000/auth/join">twinkle.com/auth/join</a>.
+      </div>
+      <button id="login" type="submit">Login</button>
+    </form>
+    <script>
+      window.onload = () => {
+        if (new URL(location.href).searchParams.get('loginError')) {
+          alert(new URL(location.href).searchParams.get('loginError'));
+        }
+      };
+    </script>
+    {% endif %}
+  </body>
+</html>

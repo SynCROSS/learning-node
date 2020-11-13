@@ -1,0 +1,11 @@
+{
+  "name": "twinkle-api",
+  "version": "0.0.1",
+  "description": "Twinkle API Server",
+  "main": "app.js",
+  "author": "SynCROSS",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon app"
+  }
+}
