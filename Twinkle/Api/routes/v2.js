@@ -36,7 +36,7 @@ router.post('/token', apiLimiter, async (req, res) => {
       {
         expiresIn: '30m', // * 30 * 60 * 1000
         issuer: 'Twinkle',
-      },
+      }
     );
     return res.json({ code: 200, message: 'OK, Token has issued.', token });
   } catch (e) {
@@ -82,7 +82,7 @@ router.get(
         message: 'Server Error',
       });
     }
-  },
+  }
 );
 
 module.exports = router;
