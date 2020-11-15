@@ -2,31 +2,56 @@ const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modu
 const axios = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/axios');
 
 const router = express.Router();
+const URL = 'http://localhost:3125/v2';
+axios.defaults.headers.origin = 'http://localhost:4000';
 
-router.get('/test', async (req, res, next) => {
-  // * Router for Testing Tokens
+const request = async (req, api) => {
   try {
     if (!req.session.jwt) {
-      const tokenResult = await axios.post('http://localhost:3125/v1/token', {
+      const tokenResult = await axios.post(`${URL}/token`, {
         clientSecret: process.env.CLIENT_SECRET,
       });
-      if (tokenResult.data && tokenResult.data.code === 200) {
-        req.session.jwt = tokenResult.data.token;
-      } else {
-        return res.json(tokenResult.data);
-      }
+      req.session.jwt = tokenResult.data.token;
     }
-    const result = await axios.get('http://localhost:3125/v1/test', {
+    return await axios.get(`${URL}${api}`, {
       headers: { authorization: req.session.jwt },
     });
-    return res.json(result.data);
+  } catch (e) {
+    if (e.response.status === 419) {
+      delete req.session.jwt;
+      return request(req, api);
+    }
+    return e.response;
+  }
+};
+
+router.get('/mypost', async (req, res, next) => {
+  try {
+    const result = await request(req, '/posts/my');
+    res.json(result.data);
   } catch (e) {
     console.error(e);
-    if (e.response.status === 419) {
-      return res.json(e.response.data);
-    }
-    return next(e);
+    next(e);
   }
+});
+
+router.get('/search/:hashtag', async (req, res, next) => {
+  try {
+    const result = await request(
+      req,
+      `/posts/hashtag/${encodeURIComponent(req.params.hashtag)}`,
+    );
+    res.json(result.data);
+  } catch (e) {
+    if (e.code) {
+      console.error(e);
+      next(e);
+    }
+  }
+});
+
+router.get('/', (req, res) => {
+  res.render('main', { key: process.env.CLIENT_SECRET });
 });
 
 module.exports = router;

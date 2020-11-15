@@ -9,6 +9,7 @@ const passport = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_mod
 require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/dotenv').config();
 
 const v1 = require('./routes/v1');
+const v2 = require('./routes/v2');
 const authRouter = require('./routes/auth');
 const indexRouter = require('./routes');
 const { sequelize } = require('./models');
@@ -51,6 +52,7 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/auth', authRouter);
 app.use('/v1', v1);
+app.use('/v2', v2);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.error} ${req.url} Router Ain't Exist.`);

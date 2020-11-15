@@ -3,7 +3,7 @@ const {
   v4: uuidv4,
 } = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/uuid');
 const { User, Domain } = require('../models');
-const { isLoggedIn } = require('../routes/middlewares');
+const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
