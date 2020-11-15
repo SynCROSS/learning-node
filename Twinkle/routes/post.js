@@ -12,7 +12,7 @@ try {
   fs.readdirSync('uploads');
 } catch (e) {
   console.error(
-    "Create 'uploads' Folder Because 'uploads' Folder doesn't Exist",
+    "Create 'uploads' Folder Because 'uploads' Folder doesn't Exist"
   );
   fs.mkdirSync('uploads');
 }
@@ -50,7 +50,7 @@ router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => {
           return Hashtag.findOrCreate({
             where: { title: tag.slice(1).toLowerCase() },
           });
-        }),
+        })
       );
       await post.addHashtags(result.map(r => r[0]));
     }
@@ -60,17 +60,5 @@ router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => {
     next(error);
   }
 });
-
-router.post('/delete', isLoggedIn, upload2.none, async (req, res, next)=>{
-  if (req.user.id!==req.post.) {
-
-  }
-  try {
-    const deletePost = await.Post.destroy({where:{id:req.user.id}})
-  } catch (e) {
-    console.error(e);
-    next(e)
-  }
-})
 
 module.exports = router;
