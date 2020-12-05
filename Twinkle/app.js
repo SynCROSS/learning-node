@@ -67,7 +67,4 @@ app.use((error, req, res, next) => {
   res.render('error');
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log('Server is Waiting on Port', port);
-});
+module.exports = app;

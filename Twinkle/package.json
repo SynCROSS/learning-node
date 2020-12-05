@@ -6,7 +6,7 @@
   "author": "SynCROSS",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon app",
+    "start": "nodemon server",
     "test": "jest",
     "coverage": "jest --coverage"
   }
