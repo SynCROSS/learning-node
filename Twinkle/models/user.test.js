@@ -11,7 +11,7 @@ const sequelize = new Sequelize(
 
 describe('User Model', () => {
   test(`Call 'static init' method.`, () => {
-    expect(User.init(sequelize).toBe(User));
+    expect(User.init(sequelize)).toBe(User);
   });
   test(`Call 'static associate' method.`, () => {
     const db = {
