@@ -1,0 +1,36 @@
+{
+  "config": {
+    "target": "http://localhost:3000",
+    "phases": [
+      {
+        "duration": 60,
+        "arrivalRate": 30
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "flow": [
+        {
+          "get": {
+            "url": "/"
+          }
+        },
+        {
+          "post": {
+            "url": "/auth/login",
+            "json": {
+              "email": "jenofire3125@gmail.com",
+              "password": "1234"
+            }
+          }
+        },
+        {
+          "get": {
+            "url": "/hashtag?hashtag=Twinkle"
+          }
+        }
+      ]
+    }
+  ]
+}

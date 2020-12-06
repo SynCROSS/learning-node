@@ -29,11 +29,11 @@
     </form>
   </div>
   {% endif %}
+  <form id="hashtag-form" action="/hashtag">
+    <input type="text" name="hashtag" placeholder="Search Tag" />
+    <button class="btn">Search</button>
+  </form>
   <div class="stars">
-    <form id="hashtag-form" action="/hashtag">
-      <input type="text" name="hashtag" placeholder="Search Tag" />
-      <button class="btn">Search</button>
-    </form>
     {% for star in stars %}
     <div class="twinkle">
       <input type="hidden" value="{{star.User.id}}" class="star-user-id" />

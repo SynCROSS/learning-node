@@ -44,10 +44,12 @@ router.get('/hashtag', async (req, res, next) => {
   try {
     const hashtag = await Hashtag.findOne({ where: { title: query } });
     let posts = [];
+
     if (hashtag) {
       posts = await hashtag.getPosts({ include: [{ model: User }] });
     }
-    return res.render('main', { title: `${query} | Twinkle`, starts: posts });
+
+    return res.render('main', { title: `${query} | Twinkle`, stars: posts });
   } catch (e) {
     console.error(e);
     return next(e);
