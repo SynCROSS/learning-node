@@ -1,0 +1,12 @@
+{
+  "name": "gif-chat-app",
+  "version": "0.0.1",
+  "description": "Gif Web Socket Chat App",
+  "main": "app.js",
+  "author": "SynCROSS",
+  "license": "MIT",
+  "dependencies": {},
+  "scripts": {
+    "start": "nodemon app"
+  }
+}
