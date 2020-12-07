@@ -1,5 +1,5 @@
-const jwt = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/jsonwebtoken');
-const RateLimit = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express-rate-limit');
+const jwt = require('jsonwebtoken');
+const RateLimit = require('express-rate-limit');
 
 exports.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {

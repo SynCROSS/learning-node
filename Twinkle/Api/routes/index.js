@@ -1,7 +1,5 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const {
-  v4: uuidv4,
-} = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/uuid');
+const express = require('express');
+const { v4: uuidv4 } = require('uuid');
 const { User, Domain } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 

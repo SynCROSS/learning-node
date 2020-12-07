@@ -1,5 +1,5 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const axios = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/axios');
+const express = require('express');
+const axios = require('axios');
 
 const router = express.Router();
 const URL = 'http://localhost:3125/v2';

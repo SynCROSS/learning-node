@@ -1,5 +1,5 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const multer = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/multer');
+const express = require('express');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
@@ -12,7 +12,7 @@ try {
   fs.readdirSync('uploads');
 } catch (e) {
   console.error(
-    "Create 'uploads' Folder Because 'uploads' Folder doesn't Exist"
+    "Create 'uploads' Folder Because 'uploads' Folder doesn't Exist",
   );
   fs.mkdirSync('uploads');
 }
@@ -50,7 +50,7 @@ router.post('/', isLoggedIn, upload2.none(), async (req, res, next) => {
           return Hashtag.findOrCreate({
             where: { title: tag.slice(1).toLowerCase() },
           });
-        })
+        }),
       );
       await post.addHashtags(result.map(r => r[0]));
     }

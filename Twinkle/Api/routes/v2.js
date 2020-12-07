@@ -1,6 +1,6 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const jwt = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/jsonwebtoken');
-const cors = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/cors');
+const express = require('express');
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
 const url = require('url');
 
 const { verifyToken, apiLimiter } = require('./middlewares');
@@ -36,7 +36,7 @@ router.post('/token', apiLimiter, async (req, res) => {
       {
         expiresIn: '30m', // * 30 * 60 * 1000
         issuer: 'Twinkle',
-      }
+      },
     );
     return res.json({ code: 200, message: 'OK, Token has issued.', token });
   } catch (e) {
@@ -82,7 +82,7 @@ router.get(
         message: 'Server Error',
       });
     }
-  }
+  },
 );
 
 module.exports = router;

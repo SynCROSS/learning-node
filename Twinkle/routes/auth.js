@@ -1,6 +1,6 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const passport = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/passport');
-const bcrypt = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/bcrypt');
+const express = require('express');
+const passport = require('passport');
+const bcrypt = require('bcrypt');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const User = require('../models/user');
 

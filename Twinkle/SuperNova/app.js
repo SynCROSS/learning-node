@@ -1,12 +1,12 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const cookieParser = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/cookie-parser');
-const morgan = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/morgan');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 const path = require('path');
-const session = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express-session');
-const nunjucks = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/nunjucks');
-const passport = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/passport');
+const session = require('express-session');
+const nunjucks = require('nunjucks');
+const passport = require('passport');
 
-require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/dotenv').config();
+require('dotenv').config();
 
 const indexRouter = require('./routes');
 

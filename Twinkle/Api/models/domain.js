@@ -1,6 +1,8 @@
-const Sequelize = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/sequelize');
+const Sequelize = require('sequelize');
 
-module.exports = class Domain extends Sequelize.Model {
+module.exports = class Domain extends (
+  Sequelize.Model
+) {
   static init(sequelize) {
     return super.init(
       {

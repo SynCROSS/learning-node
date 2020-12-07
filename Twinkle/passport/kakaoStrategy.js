@@ -1,6 +1,5 @@
-const passport = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/passport');
-const KakaoStrategy = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/passport-kakao')
-  .Strategy;
+const passport = require('passport');
+const KakaoStrategy = require('passport-kakao').Strategy;
 
 const User = require('../models/user');
 

@@ -1,4 +1,4 @@
-const Sequelize = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/sequelize');
+const Sequelize = require('sequelize');
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];

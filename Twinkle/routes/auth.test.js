@@ -1,4 +1,4 @@
-const request = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/supertest');
+const request = require('supertest');
 const { sequelize } = require('../models');
 const app = require('../app.js');
 

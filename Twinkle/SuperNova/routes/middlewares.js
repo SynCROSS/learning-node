@@ -1,4 +1,4 @@
-const jwt = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/jsonwebtoken');
+const jwt = require('jsonwebtoken');
 exports.isLoggedIn = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();

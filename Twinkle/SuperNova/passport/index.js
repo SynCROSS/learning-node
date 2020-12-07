@@ -1,4 +1,4 @@
-const passport = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/passport');
+const passport = require('passport');
 const local = require('./localStrategy');
 const kakao = require('./kakaoStrategy');
 const User = require('../models/user');

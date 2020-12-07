@@ -1,5 +1,5 @@
-const express = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/express');
-const jwt = require('C:/Users/kuuha/AppData/Local/Yarn/Data/global/node_modules/jsonwebtoken');
+const express = require('express');
+const jwt = require('jsonwebtoken');
 
 const { verifyToken, deprecated } = require('./middlewares');
 const { Domain, User, Post, Hashtag } = require('../models');
