@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gif Chat App</title>
+  </head>
+  <body>
+    <div>Press F12 to check the console tab and network tab.</div>
+    <script>
+      const webSocket = new WebSocket('ws://localhost:3000');
+      webSocket.onopen = () => {
+        console.log('Server and WebSocket connected Successfully!');
+      };
+      webSocket.onmessage = event => {
+        console.log(event.data);
+        webSocket.send('Send Message from client to Server');
+      };
+    </script>
+  </body>
+</html>
