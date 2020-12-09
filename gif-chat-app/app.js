@@ -14,11 +14,16 @@ const app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'html');
 
-nunjucks.configure('views', { express: app, watch: true });
+nunjucks.configure('views', {
+  express: app,
+  watch: true,
+});
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     resave: false,
@@ -27,6 +32,8 @@ app.use(
     cookie: { httpOnly: true, secure: false },
   }),
 );
+
+app.use('/', indexRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} Router Ain't Exist`);
@@ -45,5 +52,9 @@ const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log('Server is Running on Port', port);
 });
+// const port = process.env.PORT || 3000;
+// const server = app.listen(process.env.PORT || 3000, () => {
+//   console.log('Server is Running on Port', process.env.PORT || 3000);
+// });
 
 webSocket(server);

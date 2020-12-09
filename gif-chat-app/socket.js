@@ -7,7 +7,7 @@ module.exports = server => {
   WebSocketServer.on('connection', (ws, req) => {
     // * Famous Way To get Client's IP. localhost's ip = ::1
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log('New Client Connection', ip);
+    console.log('New Client Connection:', ip);
 
     // * If Server get Message from Client
     ws.on('message', message => {
