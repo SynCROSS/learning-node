@@ -1,32 +1,32 @@
-const WebSocket = require('ws');
+const SocketIO = require('socket.io');
 
 module.exports = server => {
-  const WebSocketServer = new WebSocket.Server({ server });
+  const io = new SocketIO.Server(server, { path: '/socket.io' });
 
   // * If Client Connects to WebSocket
-  WebSocketServer.on('connection', (ws, req) => {
+  io.on('connection', socket => {
+    const req = socket.request;
     // * Famous Way To get Client's IP. localhost's ip = ::1
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log('New Client Connection:', ip);
 
-    // * If Server get Message from Client
-    ws.on('message', message => {
-      console.log(message);
+    console.log('New Client Connection:', ip, socket.id, req.ip);
+
+    socket.on('disconnect', () => {
+      console.log('Disconnect Client', ip, socket.id);
+      clearInterval(socket.interval);
     });
 
-    ws.on('error', error => {
+    socket.on('error', error => {
       console.error(error);
     });
 
-    ws.on('close', () => {
-      console.log('Disconnect Client', ip);
-      clearInterval(ws.interval);
+    // * If Server get Message from Client
+    socket.on('reply', data => {
+      console.log(data);
     });
 
-    ws.interval = setInterval(() => {
-      if (ws.readyState === ws.OPEN) {
-        ws.send('Send Message from Server to Client.');
-      }
+    socket.interval = setInterval(() => {
+      socket.emir('news', 'Hello Socket.IO');
     }, 3000);
   });
 };

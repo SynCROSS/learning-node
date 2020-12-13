@@ -7,15 +7,14 @@
   </head>
   <body>
     <div>Press F12 to check the console tab and network tab.</div>
+    <script src="/socket.io/socket.io.js"></script>
     <script>
-      const webSocket = new WebSocket('ws://localhost:3000');
-      webSocket.onopen = () => {
-        console.log('Server and WebSocket connected Successfully!');
-      };
-      webSocket.onmessage = event => {
-        console.log(event.data);
-        webSocket.send('Send Message from client to Server');
-      };
+      const socket = io.connect('http://localhost:3000', { path: 'socket.io' });
+
+      socket.on('news', data => {
+        console.log(data);
+        socket.emit('reply', 'Hello NodeJS');
+      });
     </script>
   </body>
 </html>
