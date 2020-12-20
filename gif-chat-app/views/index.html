@@ -9,7 +9,10 @@
     <div>Press F12 to check the console tab and network tab.</div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      const socket = io.connect('http://localhost:3000', { path: 'socket.io' });
+      const socket = io.connect('http://localhost:3000', {
+        path: 'socket.io',
+        transports: ['websocket'], // * Want to connect with websocket only
+      });
 
       socket.on('news', data => {
         console.log(data);
