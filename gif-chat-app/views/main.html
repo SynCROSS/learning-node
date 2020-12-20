@@ -1,0 +1,103 @@
+{% extends "layout.html" %} {% block content %}
+<h1>GIF Chat App</h1>
+<fieldset>
+  <legend>Chat Room Lists</legend>
+  <table>
+    <thead>
+      <tr>
+        <th>Room Name</th>
+        <th>Visibility</th>
+        <th>Maximum Capacity</th>
+        <th>Room Master</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for room in rooms %}
+      <tr data-id="{{room._id}}">
+        <td>{{room.room_name}}</td>
+        <td>{{'Secret' if room.password else 'Public'}}</td>
+        <td>{{room.maximum_capacity}}</td>
+        <td style="color: {{room.room_master}}">{{room.room_master}}</td>
+        <td>
+          <button
+            data-password="{{'true' if room.password else 'false'}}"
+            data-id="{{room._id}}"
+            class="join-btn"
+          >
+            Join
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="error-message">{{error}}</div>
+  <a href="/room">Create a Room</a>
+</fieldset>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io.connect('http://localhost:3000/room', {
+    // * NameSpace
+    path: '/socket.io',
+  });
+
+  socket.on('newRoom', function (data) {
+    // * Create a new room at the additional room event
+    const tr = document.createElement('tr');
+    let td = document.createElement('td');
+    td.textContent = data.room_name;
+    tr.appendChild(td);
+    td = document.createElement('td');
+    td.textContent = data.password ? 'Secret' : 'Public';
+    tr.appendChild(td);
+    td = document.createElement('td');
+    td.textContent = data.maximum_capacity;
+    tr.appendChild(td);
+    td = document.createElement('td');
+    td.style.color = data.rooom_master;
+    td.textContent = data.rooom_master;
+    tr.appendChild(td);
+    td = document.createElement('td');
+    const button = document.createElement('button');
+    button.textContent = 'Join';
+    button.dataset.password = data.password ? 'true' : 'false';
+    button.dataset.id = data._id;
+    button.addEventListener('click', addBtnEvent);
+    td.appendChild(button);
+    tr.appendChild(td);
+    tr.dataset.id = data._id;
+    document.querySelector('table tbody').appendChild(tr); // * Add to Screen
+  });
+
+  socket.on('removeRoom', function (data) {
+    // * Remove rooms with matching id at room removal event.
+    document.querySelectorAll('tbody tr').forEach(function (tr) {
+      if (tr.dataset.id === data) {
+        tr.parentNode.removeChild(tr);
+      }
+    });
+  });
+
+  function addBtnEvent(e) {
+    // * When the 'Join' Button is Clicked.
+    if (e.target.dataset.password === 'true') {
+      const password = prompt('Enter the Password');
+      location.href = '/room/' + e.target.dataset.id + '?password=' + password;
+    } else {
+      location.href = '/room/' + e.target.dataset.id;
+    }
+  }
+
+  document.querySelectorAll('.join-btn').forEach(function (btn) {
+    btn.addEventListener('click', addBtnEvent);
+  });
+</script>
+{% endblock %} {% block script %}
+<script>
+  window.onload = () => {
+    if (new URL(location.href).searchParams.get('error')) {
+      alert(new URL(location.href).searchParams.get('error'));
+    }
+  };
+</script>
+{% endblock %}
