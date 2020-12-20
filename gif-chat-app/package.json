@@ -8,5 +8,8 @@
   "dependencies": {},
   "scripts": {
     "start": "nodemon app"
+  },
+  "devDependencies": {
+    "color-hash": "^1.0.3"
   }
 }
