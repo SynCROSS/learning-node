@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
+const ColorHash = require('color-hash');
 
 require('dotenv').config();
 
@@ -22,11 +23,23 @@ nunjucks.configure('views', {
 });
 connect();
 
+const sessionMiddleware = session({
+  resave: false,
+  saveUninitialized:false,
+  secret:process.env..COOKIE_SECRET,
+  cookie: {
+    httpOnly:true,
+    secure: false
+  }
+})
+
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(sessionMiddleware)
+
 app.use(
   session({
     resave: false,
@@ -35,6 +48,15 @@ app.use(
     cookie: { httpOnly: true, secure: false },
   }),
 );
+
+app.use((req, res, next) => {
+  if (!req.session.ColorHash) {
+    const colorHash = new ColorHash();
+
+    req.session.color = colorHash.hex(req.sessionID);
+  }
+  next();
+});
 
 app.use('/', indexRouter);
 
@@ -55,9 +77,5 @@ const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log('Server is Running on Port', port);
 });
-// const port = process.env.PORT || 3000;
-// const server = app.listen(process.env.PORT || 3000, () => {
-//   console.log('Server is Running on Port', process.env.PORT || 3000);
-// });
 
-webSocket(server);
+webSocket(server, app, sessionMiddleware);

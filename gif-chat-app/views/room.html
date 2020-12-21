@@ -1,0 +1,29 @@
+{% extends 'layout.html' %} {% block content %}
+<fieldset>
+  <legend>Create a Room</legend>
+  <form action="/room" method="post">
+    <div>
+      <input type="text" name="room_name" placeholder="Room Name" />
+    </div>
+    <div>
+      <input
+        type="number"
+        name="maximum_capacity"
+        placeholder="min capacity(more than 2)"
+        min="2"
+        value="10"
+      />
+    </div>
+    <div>
+      <input
+        type="password"
+        name="password"
+        placeholder="No Text, It's a Public."
+      />
+    </div>
+    <div>
+      <button type="submit">Create</button>
+    </div>
+  </form>
+</fieldset>
+{% endblock %}
