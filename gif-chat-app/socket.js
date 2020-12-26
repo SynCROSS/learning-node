@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const cookie = require('cookie-signature');
 
 module.exports = (server, app, sessionMiddleware) => {
-  const io = new SocketIO.Server(server, { path: '/socket.io' });
+  const io = SocketIO(server, { path: '/socket.io' });
 
   app.set('io', io);
 
@@ -23,11 +23,11 @@ module.exports = (server, app, sessionMiddleware) => {
   room.on('connection', socket => {
     console.log('Connect to Room Namespace');
     socket.on('disconnect', () => {
-      console.log('Disconnect room namespace');
+      console.log('Disconnect Room Namespace');
     });
   });
 
-  chat.on('connection', () => {
+  chat.on('connection', socket => {
     console.log('Connect to Chat Namespace');
 
     const req = socket.request;
@@ -48,8 +48,11 @@ module.exports = (server, app, sessionMiddleware) => {
       console.log('Disconnect Chat Namespace');
       socket.leave(roomId);
 
+      // const currentRoom = socket.adapter.rooms.get(roomId);
       const currentRoom = socket.adapter.rooms[roomId];
-      const userCount = currentRoom ? currentRoom.length : 0;
+      const userCount = currentRoom ? currentRoom.size : 0;
+
+      // const userCount = currentRoom ? currentRoom.length : 0;
 
       if (userCount === 0) {
         const signedCookie = req.signedCookies['connect.sid'];
@@ -68,12 +71,10 @@ module.exports = (server, app, sessionMiddleware) => {
             console.error(error);
           });
       } else {
-        socket
-          .to(roomId)
-          .emit('exit', {
-            user: 'system',
-            chat: `${req.session.color} left the Room.`,
-          });
+        socket.to(roomId).emit('exit', {
+          user: 'system',
+          chat: `${req.session.color} left the Room.`,
+        });
       }
     });
   });

@@ -11,7 +11,7 @@ const roomSchema = new Schema({
     type: Number,
     required: true,
     default: 10,
-    min_capacity: 2,
+    min: 2,
   },
   room_master: {
     type: String,

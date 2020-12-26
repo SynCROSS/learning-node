@@ -11,33 +11,30 @@ router.get('/', async (req, res, next) => {
     res.render('main', { rooms, title: 'GIF Chat App' });
   } catch (e) {
     console.error(e);
-    next();
+    next(e);
   }
 });
 
 router.get('/room', (req, res) => {
-  res.render({ title: 'Create a GIF Chat Room' });
+  res.render('room', { title: 'Create a GIF Chat Room' });
 });
 
-router.post(
-  ('/room',
-  async (req, res, next) => {
-    try {
-      const newRoom = await Room.create({
-        room_name: req.body.title,
-        maximum_capacity: req.body.maximum_capacity,
-        room_master: req.session.color,
-        password: req.body.password,
-      });
-      const io = req.app.get('io');
-      io.of('/room').emit('newRoom', newRoom);
-      res.redirect(`/room/${newRoom._id}?password=${req.body.password}`);
-    } catch (e) {
-      console.error(e);
-      next();
-    }
-  }),
-);
+router.post('/room', async (req, res, next) => {
+  try {
+    const newRoom = await Room.create({
+      room_name: req.body.room_name,
+      maximum_capacity: req.body.maximum_capacity,
+      room_master: req.session.color,
+      password: req.body.password,
+    });
+    const io = req.app.get('io');
+    io.of('/room').emit('newRoom', newRoom);
+    res.redirect(`/room/${newRoom._id}?password=${req.body.password}`);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
 
 router.get('/room/:id', async (req, res, next) => {
   try {
@@ -45,12 +42,64 @@ router.get('/room/:id', async (req, res, next) => {
     const io = req.app.get('io');
 
     if (!room) {
-      return res.redirect("/?error=This Room ain' Exist.");
+      return res.redirect('/?error=NotFound');
     }
     if (room.password && room.password !== req.query.password) {
-      return res.redirect('/?error=Wrong Password');
+      return res.redirect('/?error=WrongPassword');
     }
-  } catch (e) {}
+
+    const { rooms } = io.of('/chat').adapter;
+
+    if (
+      rooms &&
+      rooms[req.params.id] &&
+      room.maximum_capacity <= rooms[req.params.id].length
+    ) {
+      return res.redirect('/?error=ExceededMaxCapacity');
+    }
+    const chats = await Chat.find({ room: room._id }).sort('createdAt');
+    return res.render('chat', {
+      room,
+      title: room.title,
+      chats,
+      user: req.session.color,
+    });
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
+});
+
+router.delete('/room/:id', async (req, res, next) => {
+  try {
+    await Room.remove({ _id: req.params.id });
+    await Chat.remove({ room: req.params.id });
+
+    res.send('ok');
+
+    setTimeout(() => {
+      req.app.get('io').of('/room').emit('removeRoom', req.params.id);
+    }, 2000);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.post('/room/:id/chat', async (req, res, next) => {
+  try {
+    const chat = await Chat.create({
+      room: req.params.id,
+      user: req.session.color,
+      chat: req.body.chat,
+    });
+
+    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+    res.send('ok');
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
 });
 
 module.exports = router;

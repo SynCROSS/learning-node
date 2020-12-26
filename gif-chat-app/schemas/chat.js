@@ -17,7 +17,10 @@ const chatSchema = new Schema({
   },
   chat: String,
   gif: String,
-  createdAt: { type: Date, default: Date.now },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model('Chat', chatSchema);
