@@ -49,14 +49,17 @@ module.exports = (server, app, sessionMiddleware) => {
       socket.leave(roomId);
 
       // const currentRoom = socket.adapter.rooms.get(roomId);
-      const currentRoom = socket.adapter.rooms[roomId];
-      const userCount = currentRoom ? currentRoom.size : 0;
+      // const userCount = currentRoom ? currentRoom.size : 0;
 
-      // const userCount = currentRoom ? currentRoom.length : 0;
+      const currentRoom = socket.adapter.rooms[roomId];
+      const userCount = currentRoom ? currentRoom.length : 0;
 
       if (userCount === 0) {
-        const signedCookie = req.signedCookies['connect.sid'];
-        const connectSID = cookie.sign(signedCookie, process.env.COOKIE_SECRET);
+        const signedCookie = cookie.sign(
+          req.signedCookies['connect.sid'],
+          process.env.COOKIE_SECRET,
+        );
+        const connectSID = `${signedCookie}`;
 
         axios
           .delete(`http://localhost:3000/room/${roomId}`, {
@@ -76,6 +79,10 @@ module.exports = (server, app, sessionMiddleware) => {
           chat: `${req.session.color} left the Room.`,
         });
       }
+    });
+
+    socket.on('chat', chat => {
+      socket.to(data.room).emit(data);
     });
   });
 };
