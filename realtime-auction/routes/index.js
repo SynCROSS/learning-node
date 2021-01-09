@@ -34,7 +34,7 @@ router.get('/join', isNotLoggedIn, (req, res) => {
 
 router.get('/good', isLoggedIn, (req, res) => {
   res.render('good', {
-    title: 'Register Goods - RealTimeAuction',
+    title: 'Register Good - RealTimeAuction',
   });
 });
 

@@ -11,7 +11,7 @@ require('dotenv').config();
 const indexRouter = require('./routes/');
 const authRouter = require('./routes/auth.js');
 const { sequelize } = require('./models');
-const passportConfig = require('passport');
+const passportConfig = require('./passport');
 
 const app = express();
 

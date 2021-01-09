@@ -1,0 +1,30 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="timeline">
+  <form action="/auth/join" id="join-form" method="post">
+    <div class="input-group">
+      <label for="join-email">E-Mail</label>
+      <input type="email" id="join-email" name="email" />
+    </div>
+    <div class="input-group">
+      <label for="join-nick">Nickname</label>
+      <input type="text" id="join-nick" name="nick" />
+    </div>
+    <div class="input-group">
+      <label for="join-password">Password</label>
+      <input type="password" id="join-password" name="password" />
+    </div>
+    <div class="input-group">
+      <label for="join-money">Balance</label>
+      <input type="number" id="join-money" name="money" />
+    </div>
+    <button id="join-btn" class="btn" type="submit">Join!</button>
+  </form>
+</div>
+<script>
+  window.onload = () => {
+    if (new URL(location.href).searchParams.get('joinError')) {
+      alert(new URL(location.href).searchParams.get('joinError'));
+    }
+  };
+</script>
+{% endblock %}

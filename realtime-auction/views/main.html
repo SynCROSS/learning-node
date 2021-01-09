@@ -1,0 +1,27 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="timeline">
+  <h2>Auction Goods List</h2>
+  <table id="good-list">
+    <tr>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Starting Price</th>
+      <th>End Time</th>
+      <th>Enter</th>
+    </tr>
+    {% for good in goods %}
+    <tr>
+      <td>{{good.name}}</td>
+      <td>
+        <img src="/img/{{good.img}}" />
+      </td>
+      <td>{{good.price}}</td>
+      <td class="time" data-start="{{good.createdAt}}">00:00:00</td>
+      <td>
+        <a href="/good/{{good.id}}" class="enter btn">Enter</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

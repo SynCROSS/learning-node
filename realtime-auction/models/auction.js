@@ -13,6 +13,7 @@ module.exports = class Good extends (
         },
         message: {
           type: Sequelize.STRING(100),
+          allowNull: true,
         },
       },
       {

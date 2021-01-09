@@ -4,7 +4,7 @@ const Good = require('./good.js');
 const Auction = require('./auction.js');
 
 const env = process.env.NODE_ENV || 'development';
-const config = require('/../config/config.json')[env];
+const config = require('../config/config')[env];
 const db = {};
 
 const sequelize = new Sequelize(
