@@ -27,7 +27,7 @@ router.get('/', async (req, res, next) => {
 });
 
 router.get('/join', isNotLoggedIn, (req, res) => {
-  res.render('/join', {
+  res.render('join', {
     title: 'Join - RealTimeAuction',
   });
 });
@@ -85,5 +85,86 @@ router.post(
     }
   },
 );
+
+router.get('/good/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const [good, auction] = await Promise.all([
+      Good.findOne({
+        where: {
+          id: req.params.id,
+        },
+        include: {
+          model: User,
+          as: 'Owner',
+        },
+      }),
+      Auction.findAll({
+        where: {
+          GoodId: req.params.id,
+        },
+        include: {
+          model: User,
+        },
+        order: [['bid', 'ASC']],
+      }),
+    ]);
+    res.render('auction', {
+      title: `${good.name} - RealTimeAuction`,
+      good,
+      auction,
+    });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
+router.post('/good/:id/bid', async (req, res, next) => {
+  try {
+    const { bid, msg } = req.body;
+    const good = await Good.findOne({
+      where: { id: req.params.id },
+      include: {
+        model: Auction,
+      },
+      order: [
+        [
+          {
+            model: Auction,
+          },
+          'bid',
+          'DESC',
+        ],
+      ],
+    });
+
+    if (good.price >= bid) {
+      return res.status(403).send('Must be higher than the starting price.');
+    }
+    if (new Date(good.createdAt).valueOf() + 1000 * 60 * 60 * 24 < new Date()) {
+      return res.status(403).send('Auction has already ended.');
+    }
+    if (good.Auctions[0] && good.Auctions[0].bid >= bid) {
+      return res.status(403).send('Must be higher than the previous price.');
+    }
+
+    const result = await Auction.create({
+      bid,
+      msg,
+      UserId: req.user.id,
+      GoodId: req.params.id,
+    });
+
+    req.app.get('io').to(req.params.id).emit('bid', {
+      bid: result.bid,
+      msg: result.msg,
+      nick: req.user.nick,
+    });
+    return res.send('ok');
+  } catch (e) {
+    console.error(e);
+    return next(e);
+  }
+});
 
 module.exports = router;

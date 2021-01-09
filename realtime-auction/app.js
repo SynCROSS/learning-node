@@ -12,6 +12,8 @@ const indexRouter = require('./routes/');
 const authRouter = require('./routes/auth.js');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
+const webSocket = require('./socket.js');
+const sse = require('./sse.js');
 
 const app = express();
 
@@ -68,6 +70,9 @@ app.use((error, req, res, next) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log('Server is Running on Port', port);
 });
+
+webSocket(server, app);
+sse(server);

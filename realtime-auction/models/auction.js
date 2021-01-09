@@ -6,7 +6,7 @@ module.exports = class Good extends (
   static init(sequelize) {
     return super.init(
       {
-        bidPrice: {
+        bid: {
           type: Sequelize.INTEGER,
           allowNull: false,
           defaultValue: 0,

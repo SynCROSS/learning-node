@@ -3,7 +3,12 @@
   <form action="/auth/join" id="join-form" method="post">
     <div class="input-group">
       <label for="join-email">E-Mail</label>
-      <input type="email" id="join-email" name="email" />
+      <input
+        type="email"
+        id="join-email"
+        name="email"
+        placeholder="example@domain.com"
+      />
     </div>
     <div class="input-group">
       <label for="join-nick">Nickname</label>
@@ -15,7 +20,7 @@
     </div>
     <div class="input-group">
       <label for="join-money">Balance</label>
-      <input type="number" id="join-money" name="money" />
+      <input type="number" id="join-money" name="money" placeholder="KRW" />
     </div>
     <button id="join-btn" class="btn" type="submit">Join!</button>
   </form>

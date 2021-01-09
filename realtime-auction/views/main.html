@@ -24,4 +24,25 @@
     {% endfor %}
   </table>
 </div>
+<script src="https://unpkg.com/event-source-polyfill/src/eventsource.min.js"></script>
+  <script>
+    const es = new EventSource('/sse');
+    es.onmessage = function (e) {
+      document.querySelectorAll('.time').forEach((td) => {
+        const endTime = new Date(td.dataset.start); // Auction Start Time
+        const serverTime = new Date(parseInt(e.data, 10));
+        endTime.setDate(endTime.getDate() + 1); // Auction End Time
+
+        if (serverTime >= endTime) { // If Auction ends
+          return td.textContent = '00:00:00';
+        } else {
+          const remainingTime = endTime - serverTime; //
+          const seconds = ('0' + Math.floor((remainingTime / 1000) % 60)).slice(-2);
+          const minutes = ('0' + Math.floor((remainingTime / 1000 / 60) % 60)).slice(-2);
+          const hours = ('0' + Math.floor((remainingTime / (1000 * 60 * 60)) % 24)).slice(-2);
+          return td.textContent = hours + ':' + minutes + ':' + seconds ;
+        }
+      });
+    };
+    </script>
 {% endblock %}

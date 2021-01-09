@@ -16,11 +16,11 @@ module.exports = class User extends (
           allowNull: false,
         },
         password: {
-          type: Sequelize.STRING(12),
+          type: Sequelize.STRING(1024),
           allowNull: true,
         },
         money: {
-          type: Sequelize.INTEGER,
+          type: Sequelize.BIGINT,
           allowNull: false,
           defaultValue: 0,
         },
