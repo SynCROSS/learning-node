@@ -3,25 +3,33 @@ const path = require('path');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const passport = require('passport');
 const nunjucks = require('nunjucks');
-const ColorHash = require('color-hash');
 
 require('dotenv').config();
 
-const webSocket = require('./socket');
-const indexRouter = require('./routes');
-const connect = require('./schemas');
+const indexRouter = require('./routes/');
+const authRouter = require('./routes/auth.js');
+const { sequelize } = require('./models');
+const passportConfig = require('passport');
 
 const app = express();
 
+passportConfig();
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'html');
-
 nunjucks.configure('views', {
   express: app,
   watch: true,
 });
-connect();
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log('Database Connection is Successful!');
+  })
+  .catch(e => {
+    console.error(e);
+  });
 
 const sessionMiddleware = session({
   resave: false,
@@ -35,25 +43,19 @@ const sessionMiddleware = session({
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/gif', express.static(path.join(__dirname, 'uploads')));
+app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(sessionMiddleware);
-
-app.use((req, res, next) => {
-  if (!req.session.color) {
-    const colorHash = new ColorHash();
-
-    req.session.color = colorHash.hex(req.sessionID);
-  }
-  next();
-});
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
-  const error = new Error(`${req.method} ${req.url} Router Ain't Exist`);
+  const error = new Error(`${req.method} ${req.url} Router ain't Exist.`);
   error.status = 404;
   next(error);
 });
@@ -66,8 +68,6 @@ app.use((error, req, res, next) => {
 });
 
 const port = process.env.PORT || 3000;
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log('Server is Running on Port', port);
 });
-
-webSocket(server, app, sessionMiddleware);
