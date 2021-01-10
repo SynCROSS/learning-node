@@ -2,8 +2,9 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const schedule = require('node-schedule');
 
-const { User, Good, Auction } = require('../models');
+const { User, Good, Auction, sequelize } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('../routes/middlewares.js');
 
 const router = express.Router();
@@ -72,11 +73,41 @@ router.post(
     try {
       const { name, price } = req.body;
 
-      await Good.create({
+      const good = await Good.create({
         OwnerId: req.user.id,
         name,
         img: req.file.filename,
         price,
+      });
+      const endTime = new Date();
+      endTime.setDate(endTime.getDate() + 1); // * a day later
+      schedule.scheduleJob(endTime, async () => {
+        const success = await Auction.findOne({
+          where: {
+            GoodId: good.id,
+          },
+          order: [['bid', 'DESC']],
+        });
+        await Good.update(
+          {
+            SoldId: success.UserId,
+          },
+          {
+            where: {
+              id: good.id,
+            },
+          },
+        );
+        await User.update(
+          {
+            money: sequelize.literal(`money - ${success.bid}`),
+          },
+          {
+            where: {
+              id: success.UserId,
+            },
+          },
+        );
       });
       res.redirect('/');
     } catch (e) {
@@ -164,6 +195,35 @@ router.post('/good/:id/bid', async (req, res, next) => {
   } catch (e) {
     console.error(e);
     return next(e);
+  }
+});
+
+router.get('/list', isLoggedIn, async (req, res, next) => {
+  try {
+    const goods = await Good.findAll({
+      where: {
+        SoldId: req.user.id,
+      },
+      include: {
+        model: Auction,
+      },
+      order: [
+        [
+          {
+            model: Auction,
+          },
+          'bid',
+          'DESC',
+        ],
+      ],
+    });
+    res.render('list', {
+      title: 'List of successful bids - RealTimeAuction',
+      goods,
+    });
+  } catch (e) {
+    console.error(e);
+    next(e);
   }
 });
 

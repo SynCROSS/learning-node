@@ -14,10 +14,13 @@ const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 const webSocket = require('./socket.js');
 const sse = require('./sse.js');
+const checkAuction = require('./checkAuction.js');
 
 const app = express();
 
 passportConfig();
+checkAuction();
+
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'html');
 nunjucks.configure('views', {
