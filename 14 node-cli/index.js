@@ -6,8 +6,9 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
+console.clear();
 
-rl.question('Is Javascript the Best [y/n]: ', answer => {
+const cb = answer => {
   switch (answer) {
     case 'y':
       console.log('I recommend you try the typescript.');
@@ -18,7 +19,10 @@ rl.question('Is Javascript the Best [y/n]: ', answer => {
       rl.close();
       break;
     default:
-      rl.close();
+      console.log(`You must type 'y' or 'n'`);
+      rl.question('Is Javascript the Best [y/n]: ', cb);
       break;
   }
-});
+};
+
+rl.question('Is Javascript the Best [y/n]: ', cb);
