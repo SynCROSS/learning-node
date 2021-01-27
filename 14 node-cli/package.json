@@ -6,6 +6,6 @@
   "author": "SynCROSS",
   "license": "MIT",
   "bin": {
-    "cli": "./index.js"
+    "cli": "./template.js"
   }
 }
