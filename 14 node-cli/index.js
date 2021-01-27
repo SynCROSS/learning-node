@@ -1,3 +1,3 @@
 #! /usr/bin/env node
-// * npx cli to execute this
-console.log('Hello World!');
+// * npx cli one two three four to execute this
+console.log('Hello World!', process.argv);
