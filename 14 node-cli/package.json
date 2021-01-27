@@ -1,0 +1,11 @@
+{
+  "name": "node-cli",
+  "version": "0.0.1",
+  "description": "CLI Program Built with NodeJS",
+  "main": "index.js",
+  "author": "SynCROSS",
+  "license": "MIT",
+  "bin": {
+    "cli": "./index.js"
+  }
+}
