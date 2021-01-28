@@ -6,6 +6,11 @@
   "author": "SynCROSS",
   "license": "MIT",
   "bin": {
-    "cli": "./template.js"
+    "cli": "./commander.js"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^7.0.0",
+    "inquirer": "^7.3.3"
   }
 }
