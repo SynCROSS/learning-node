@@ -1,12 +1,14 @@
 #! /usr/bin/env node
 // * You need to change package.json and type again 'npm i -g' or 'yarn global add' to execute template.js
+// * npx cli to execute this
 const fs = require('fs');
 const path = require('path');
-const { pathToFileURL } = require('url');
+const readline = require('readline');
 
-const type = process.argv[2];
-const name = process.argv[3];
-const directory = process.argv[4] || '.';
+let rl;
+let type = process.argv[2];
+let name = process.argv[3];
+let directory = process.argv[4] || '.';
 
 const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
@@ -88,9 +90,43 @@ const makeTemplate = () => {
   }
 };
 
+const dirAnswer = answer => {
+  directory = answer?.trim() || '.';
+  rl.close();
+  makeTemplate();
+};
+
+const nameAnswer = answer => {
+  if (!answer || !answer.trim()) {
+    console.clear();
+    console.log('You Must Type the Name!');
+    return rl.question('Filename:', nameAnswer);
+  }
+  name = answer;
+  return rl.question(
+    'Directory to Save(Default is Current Directory):',
+    dirAnswer,
+  );
+};
+
+const typeAnswer = answer => {
+  if (answer !== 'html' && answer !== 'express-router') {
+    console.clear();
+    console.log(`'type' must be 'html' or 'express-router'`);
+    return rl.question('Template(html/express-touter):', typeAnswer);
+  }
+  type = answer;
+  return rl.question('Filename:', nameAnswer);
+};
+
 const App = () => {
   if (!type || !name) {
-    console.error(`Usage: npx cli <html|express-router filename> [dir]`);
+    rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    console.clear();
+    return rl.question('Template(html/express-touter):', typeAnswer);
   } else {
     makeTemplate();
   }
