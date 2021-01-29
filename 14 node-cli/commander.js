@@ -2,7 +2,7 @@
 const { program } = require('commander');
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline');
+const inquirer = require('inquirer');
 
 const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
@@ -98,9 +98,46 @@ program
     makeTemplate(type, options.filename, options.directory);
   });
 
-program.command('*', { hidden: true }).action(() => {
-  console.log(`Can't Find the Command`);
-  program.help();
-});
-
-program.parse(process.argv);
+program
+  .action((cmd, args) => {
+    console.log(args);
+    if (args ?? false) {
+      console.log();
+      console.log(`Can't Find the Command.`);
+      program.help();
+    } else {
+      inquirer
+        .prompt([
+          {
+            type: 'list',
+            name: 'type',
+            message: 'Choose the templates:',
+            choices: ['html', 'express-router'],
+          },
+          {
+            type: 'input',
+            name: 'name',
+            message: 'Enter the Filename',
+            default: 'index',
+          },
+          {
+            type: 'input',
+            name: 'directory',
+            message: 'Where is the Directory to Save?',
+            default: '.',
+          },
+          {
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Are You Ready to Proceed? [y/n]',
+          },
+        ])
+        .then(answers => {
+          if (answers.confirm) {
+            makeTemplate(answers.type, answers.name, answers.directory);
+            console.log('Done :)');
+          }
+        });
+    }
+  })
+  .parse(process.argv);
