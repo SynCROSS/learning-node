@@ -3,6 +3,7 @@ const { program } = require('commander');
 const fs = require('fs');
 const path = require('path');
 const inquirer = require('inquirer');
+const chalk = require('chalk');
 
 const htmlTemplate = `<!DOCTYPE html>
 <html lang="en">
@@ -58,10 +59,10 @@ const mkdir = dir => {
 
 const checkAndWriteFile = (dir = '', template = '') => {
   if (isExistingFolder(dir)) {
-    console.error('That File Already Exists');
+    console.error(chalk.bold.rgb(220, 20, 60)('That File Already Exists'));
   } else {
     fs.writeFileSync(dir, template);
-    console.log(dir, 'added!');
+    console.log(chalk.green(dir, 'added!'));
   }
 };
 
@@ -80,7 +81,9 @@ const makeTemplate = (type, name, directory) => {
       checkAndWriteFile(pathToFile, express_routerTemplate);
       break;
     default:
-      console.log(`You Must Type 'html' or 'express-router'`);
+      console.log(
+        chalk.bold.rgb(220, 20, 60)(`You Must Type 'html' or 'express-router'`),
+      );
       break;
   }
 };
@@ -100,10 +103,9 @@ program
 
 program
   .action((cmd, args) => {
-    console.log(args);
-    if (args ?? false) {
+    if (args) {
       console.log();
-      console.log(`Can't Find the Command.`);
+      console.log(chalk.bold.rgb(220, 20, 60)(`Can't Find the Command.`));
       program.help();
     } else {
       inquirer
@@ -135,7 +137,7 @@ program
         .then(answers => {
           if (answers.confirm) {
             makeTemplate(answers.type, answers.name, answers.directory);
-            console.log('Done :)');
+            console.log(chalk.green('Done :)'));
           }
         });
     }
